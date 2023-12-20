@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <ng-content select="[dialog-header]"></ng-content>
+
+  <h4 class="title" *ngIf="title">{{ title }}</h4>
+
+  <button type="button" class="btn close-button" (click)="dismiss()">
+    <webui-icon [icon]="Icon.Close" [size]="IconSize.Large"></webui-icon>
+  </button>
+</div>
+
+<div class="modal-body">
+  <ng-content select="[dialog-content]"></ng-content>
+</div>
+
+<div class="modal-footer">
+  <ng-content select="[dialog-footer]"></ng-content>
+</div>

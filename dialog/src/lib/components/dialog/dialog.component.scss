@@ -1,0 +1,48 @@
+@use 'styles/mixins';
+
+$close-button-color: #7a7a7a;
+$text-color: #2f363d;
+$header-background-color: #eef6ff;
+$header-border-color: #d3deea;
+
+:host {
+  font-family: 'Roboto', sans-serif;
+  color: $text-color;
+}
+
+.modal-header {
+  padding: 14px 14px 14px 32px;
+  background-color: $header-background-color;
+  border-bottom-color: $header-border-color;
+
+  @include mixins.media-breakpoint-down('md') {
+    padding: 12px 15px;
+  }
+}
+
+.title {
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 500;
+  margin-bottom: 0;
+
+  @include mixins.media-breakpoint-down('md') {
+    font-size: 20px;
+    line-height: 23px;
+  }
+}
+
+.close-button {
+  font-size: 24px;
+  margin-left: auto;
+  color: $close-button-color;
+  padding: 0;
+}
+
+.modal-body:empty {
+  display: none;
+}
+
+.modal-footer:empty {
+  display: none;
+}

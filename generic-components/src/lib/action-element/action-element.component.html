@@ -1,0 +1,49 @@
+<div class="wrapper form-group mt-3">
+  <select
+    class="form-select"
+    [class.default]="!action.endpoint"
+    [(ngModel)]="action">
+    <option [value]="{}" disabled>{{ 'actions.label' | translate }}</option>
+    <option *ngFor="let option of config.options" [ngValue]="option">
+      {{ option.translateKey || option.label | translate }}
+    </option>
+  </select>
+  <button
+    class="btn btn-primary"
+    type="button"
+    (click)="toDoAction()"
+    webuiSubscriptionRequired
+    [attr.title]="getSmsTitle(action.endpoint)"
+    [disabled]="isDisableSmsButton(action.endpoint)">
+    {{ label | translate }}
+    <webui-spinner *ngIf="actionProcess"></webui-spinner>
+  </button>
+
+  <div class="ml-auto">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+<ng-template #content>
+  <div class="modal-header">
+    <p>{{ action.message | translate }}</p>
+
+    <webui-close-button
+      class="ml-auto"
+      (click)="modalRef.close(false)"></webui-close-button>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.close(true)">
+      {{ config.agree_label | translate }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modalRef.close(false)">
+      {{ config.decline_label | translate }}
+    </button>
+  </div>
+</ng-template>

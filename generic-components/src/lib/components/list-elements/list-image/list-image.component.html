@@ -1,0 +1,65 @@
+<span [class.mr-1]="config.label" *ngIf="icon && !config.setColorForLabel">
+  <webui-fa-icon
+    [icon]="icon"
+    [ngClass]="[iconClass]"
+    [title]="config.title || ''"
+    [ngStyle]="{ 'fontSize.px': config.fontSize }">
+  </webui-fa-icon>
+</span>
+
+<ng-container *ngIf="config.label && config.label.slice">
+  <span *ngIf="!config.setColorForLabel">{{ label | translate }}&nbsp;</span>
+  <span *ngIf="config.setColorForLabel" [ngClass]="[iconClass]">
+    {{ label | translate }}&nbsp;
+  </span>
+</ng-container>
+<ng-container *ngIf="config.label && !config.label.slice">
+  <span *ngIf="!config.setColorForLabel">
+    {{ config.label[config.value] }}&nbsp;
+  </span>
+  <span *ngIf="config.setColorForLabel" [ngClass]="[iconClass]">
+    {{ config.label[config.value] | translate }}&nbsp;
+  </span>
+</ng-container>
+
+<span class="description" *ngIf="config.emptyValue && !src && !file">
+  {{ config.emptyValue | translate }}
+</span>
+
+<img
+  alt="Signature"
+  width="112"
+  height="48"
+  class="signature"
+  *ngIf="src && config.signature"
+  [src]="src" />
+
+<ng-container *ngIf="src && !config.signature">
+  <img *ngIf="src" [src]="src" width="60" height="60" />
+</ng-container>
+
+<span class="mr-1" *ngIf="config.delim && !last">{{ config.delim }}</span>
+
+<div *ngIf="file" [class.mobile]="isMobileDevice">
+  <a #filelink [href]="file" target="_blank">
+    <webui-fa-icon
+      #emmi
+      [icon]="['fas', 'file']"
+      class="file-icon"></webui-fa-icon>
+    <webui-fa-icon
+      [icon]="['fas', 'download']"
+      class="download-icon"></webui-fa-icon>
+    <span *ngIf="config.display">{{ config.display | translate }}</span>
+    <span *ngIf="!config.display">
+      {{ getExtension(file) | uppercase }} {{ 'file' | translate }}
+    </span>
+  </a>
+  <webui-fa-icon
+    *ngIf="file"
+    class="upload-button"
+    (click)="downloadFile()"
+    icon="download"></webui-fa-icon>
+</div>
+
+<div *ngIf="contactAvatar" class="contact-avatar">{{ contactAvatar }}</div>
+<br *ngIf="!config.hidden && !config.delim && !last" />

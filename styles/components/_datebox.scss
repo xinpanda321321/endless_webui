@@ -1,0 +1,77 @@
+/*---------- jtsage-datebox-bootstrap4 ---------- */
+
+.dbCalGrid {
+  .btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .btn-outline-primary {
+    border: none;
+    font-size: 14px;
+    color: $gray !important;
+
+    @each $item in $themes {
+      .#{$item}-theme &:hover {
+        background-color: map-get($theme-colors, $item);
+        color: $white !important;
+      }
+    }
+  }
+
+  .btn-outline-secondary {
+    opacity: 0.4;
+  }
+
+  .btn-success {
+    border: none;
+
+    @each $item in $themes {
+      .#{$item}-theme &:hover {
+        background-color: map-get($theme-colors, $item);
+        color: $white !important;
+      }
+    }
+  }
+}
+
+.db-show {
+  border-radius: 0.25rem;
+
+  .dbCalPrev,
+  .dbCalNext {
+    width: 38px;
+    height: 38px;
+
+    & ~ h5 {
+      margin-bottom: 0;
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  .btn-group-vertical {
+    flex-direction: row;
+
+    .btn {
+      gap: 0.5rem;
+
+      span {
+        display: inline-flex;
+      }
+    }
+  }
+}
+
+.dbBoxh,
+.dbBoxi {
+  align-items: center;
+
+  .dbBoxNext,
+  .dbBoxPrev {
+  }
+
+  input {
+    border-radius: 0.25rem;
+  }
+}

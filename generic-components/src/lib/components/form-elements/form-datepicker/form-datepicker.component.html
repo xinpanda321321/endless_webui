@@ -1,0 +1,148 @@
+<div class="form-group" [hidden]="config.hide || viewMode || config.read_only">
+  <div class="form-element">
+    <label
+      class="form-element-label"
+      [class.required]="config.templateOptions.required"
+      *ngIf="label && config.templateOptions.label"
+      [attr.for]="key">
+      {{
+        getTranslationKey(config.key, 'label')
+          | translate : { Default: config.templateOptions.label }
+      }}:
+    </label>
+    <webui-info
+      *ngIf="config.templateOptions.description"
+      [description]="
+        getTranslationKey(config.key, 'description')
+          | translate : { Default: config.templateOptions.description }
+      "></webui-info>
+
+    <ng-container *ngIf="mobileDevice; else desktopDeviceInputs">
+      <div class="input-group form-element-content datepicker mb-2 edit w-100">
+        <input
+          type="date"
+          class="form-control mobile-datepicker"
+          [hidden]="config.templateOptions.type === 'time'"
+          [(ngModel)]="date"
+          (ngModelChange)="updateFromMobile()"
+          [attr.id]="key"
+          [attr.name]="key" />
+
+        <div class="relative time-wrapper">
+          <webui-time-picker
+            #t
+            [time]="time"
+            (changed)="updateFromMobile($event)">
+            <input
+              type="text"
+              class="form-control mobile-datepicker"
+              [ngModel]="time"
+              (focus)="t.onFocus()"
+              (ngModelChange)="updateFromMobile($event)"
+              [hidden]="config.templateOptions.type === 'date'" />
+          </webui-time-picker>
+
+          <span
+            class="time"
+            *ngIf="config.templateOptions.showTime"
+            [placement]="placement || 'bottom'"
+            [webuiTooltip]="'Time submitted by candidate'">
+            {{ config.value | dateFormat : 'hh:mm A' }}
+          </span>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="config.many">
+      <ul class="dates">
+        <li class="date" *ngFor="let date of formControl.value">
+          {{ date }}
+          <button class="btn action" type="button" (click)="removeDate(date)">
+            <webui-fa-icon icon="times"></webui-fa-icon>
+          </button>
+        </li>
+      </ul>
+    </ng-container>
+  </div>
+  <div *ngIf="errors && errors[config.key]">
+    <div class="text-danger mt-3">{{ errors[config.key] }}</div>
+  </div>
+
+  <div *ngIf="message && message[config.key]">
+    <div class="text-success mt-1">{{ message[config.key] }}</div>
+  </div>
+</div>
+
+<div
+  class="form-group"
+  [class.inline-block]="config.inline"
+  *ngIf="(viewMode || config.read_only) && !config.hide">
+  <div class="form-element">
+    <label
+      class="form-element-label"
+      *ngIf="label && config.templateOptions.label">
+      {{
+        getTranslationKey(config.key, 'label')
+          | translate : { Default: config.templateOptions.label }
+      }}:
+    </label>
+    <webui-info
+      *ngIf="config.templateOptions.description"
+      [description]="
+        getTranslationKey(config.key, 'description')
+          | translate : { Default: config.templateOptions.description }
+      "></webui-info>
+    <div [class.readonly-value]="editMode" class="form-element-content">
+      {{ displayValue || '-' }}
+    </div>
+  </div>
+</div>
+
+<ng-template #desktopDeviceInputs>
+  <div class="input-group form-element-content datepicker mb-2 edit">
+    <div class="input-group" [hidden]="config.templateOptions.type === 'time'">
+      <input
+        class="form-control"
+        bsDatepicker
+        autocomplete="off"
+        [(ngModel)]="date"
+        (ngModelChange)="onDateChange()"
+        [maxDate]="maxDate"
+        [bsConfig]="{
+          dateInputFormat: dateFormat,
+          showClearButton: true
+        }" />
+
+      <div class="input-group-addon">
+        <webui-icon
+          [icon]="Icon.Calendar"
+          [size]="IconSize.Medium"></webui-icon>
+      </div>
+    </div>
+
+    <div
+      class="relative time-wrapper"
+      [hidden]="
+        config.templateOptions.type === 'date' ||
+        (config.templateOptions.type === 'datetime' && !date)
+      ">
+      <webui-time-picker #t [time]="time" (changed)="updateFromMobile($event)">
+        <input
+          class="form-control"
+          type="text"
+          [ngModel]="time"
+          readonly
+          (focus)="t.onFocus()"
+          (ngModelChange)="updateFromMobile($event)" />
+      </webui-time-picker>
+
+      <span
+        class="time"
+        *ngIf="config.templateOptions.showTime"
+        [placement]="placement || 'bottom'"
+        [webuiTooltip]="'Time submitted by candidate'">
+        {{ config.value | dateFormat : 'hh:mm A' }}
+      </span>
+    </div>
+  </div>
+</ng-template>

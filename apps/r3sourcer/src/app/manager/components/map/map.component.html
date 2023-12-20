@@ -1,0 +1,48 @@
+<div #filterBlock class="filter-wrapper" [class.open]="hasFilters$ | async">
+  <webui-filter-block
+    [key]="config.list"
+    [config]="filtersOfList"
+    (event)="filterHandler($event)"></webui-filter-block>
+</div>
+
+<div class="map" *ngIf="markers">
+  <google-map
+    [options]="options"
+    [center]="currentPosition"
+    width="100%"
+    height="100%">
+    <map-marker
+      [position]="item.position"
+      [icon]="icons[item.type].path"
+      *ngFor="let item of markers"
+      #marker="mapMarker"
+      (mapClick)="openInfo(item, marker)"></map-marker>
+
+    <map-info-window>
+      <strong>{{ currentMarker?.name }}</strong>
+      <br />
+      <p *ngIf="currentMarker?.contact">{{ currentMarker?.__str__ }}</p>
+      <p *ngIf="currentMarker?.contact">
+        {{ currentMarker?.contact?.name }}
+        {{ currentMarker?.contact?.phone_mobile }}
+      </p>
+    </map-info-window>
+  </google-map>
+</div>
+
+<button type="button" class="btn filter-button" (click)="onToggle()">
+  <webui-svg-icon icon="filter"></webui-svg-icon>
+</button>
+
+<div *ngIf="markers" class="legend">
+  <ng-container *ngFor="let type of types">
+    <div *ngIf="icons[type].exist" class="item">
+      <img [src]="icons[type].path" />
+      {{ icons[type].translateKey | translate }}
+    </div>
+  </ng-container>
+</div>
+
+<div class="map-preloader" *ngIf="loading$ | async">
+  <webui-loader></webui-loader>
+</div>

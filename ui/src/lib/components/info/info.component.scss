@@ -1,0 +1,47 @@
+@use 'styles/variables' as *;
+
+.info {
+  position: relative;
+  top: -1px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 1rem;
+  height: 1rem;
+
+  margin-left: 3px;
+  padding-right: 2px;
+  padding-bottom: 0px;
+
+  font-size: 12px;
+  line-height: 12px;
+
+  border-radius: 50%;
+  border: 1px solid $gray;
+
+  color: $gray;
+  opacity: 0.5;
+  cursor: pointer;
+
+  &.danger {
+    border-color: $danger;
+    color: $danger;
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+
+    opacity: 1;
+
+    @each $item in $themes {
+      .#{$item}-theme & {
+        border-color: map-get($theme-colors, $item);
+        color: map-get($theme-colors, $item);
+      }
+    }
+  }
+}
